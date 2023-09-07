@@ -2,7 +2,7 @@
 version: 0.0
 os: linux
 hooks:
-ApplicationStop:
+  ApplicationStop:
     - location: .github/scripts/deploy-script.sh
       timeout: 300
       runas: root
