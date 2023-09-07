@@ -1,6 +1,8 @@
-
 version: 0.0
 os: linux
+files:
+  - source: /.github/scripts
+    destination: /usr/local/codedeployresources
 hooks:
   ApplicationStop:
     - location: .github/scripts/deploy-script.sh
