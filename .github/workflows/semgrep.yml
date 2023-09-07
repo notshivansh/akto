@@ -7,8 +7,6 @@ on:
   # Scan on-demand through GitHub Actions interface:
   workflow_dispatch: {}
   # Scan mainline branches and report all findings:
-  push:
-    branches: ["master"]
   # Schedule the CI job (this method uses cron syntax):
   schedule:
     - cron: '20 17 * * *' # Sets Semgrep to scan every day at 17:20 UTC.

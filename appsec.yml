@@ -2,7 +2,23 @@
 version: 0.0
 os: linux
 hooks:
-  AfterInstall:
+ApplicationStop:
     - location: .github/scripts/deploy-script.sh
-      timeout: 600
+      timeout: 300
+      runas: root
+  BeforeInstall:
+    - location: .github/scripts/echo-script.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: .github/scripts/echo-script.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: .github/scripts/echo-script.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: .github/scripts/echo-script.sh
+      timeout: 300
       runas: root
