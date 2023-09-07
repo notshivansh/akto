@@ -1,13 +1,6 @@
 version: 0.0
 os: linux
-files:
-  - source: /.github/scripts
-    destination: /usr/local/codedeployresources
 hooks:
-  BeforeInstall:
-    - location: .github/scripts/echo-script.sh
-      timeout: 300
-      runas: root
   AfterInstall:
     - location: .github/scripts/deploy-script.sh
       timeout: 300
