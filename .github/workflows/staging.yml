@@ -3,7 +3,10 @@ name: Staging
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -127,6 +130,7 @@ jobs:
       #     START_TIME_DELAY: 180
 
   deploy:
+    if: ${{ github.event.inputs.Environment == 'prod' && github.event.inputs.Deploy == 'true' }}
     needs: build
     runs-on: ubuntu-latest
     environment: Dev
@@ -141,18 +145,17 @@ jobs:
         role-session-name: GitHub-Action-Role
         aws-region: ${{ secrets.AWS_REGION }}
     - name: Deploy to flash
-      if: ${{ github.event.inputs.Environment == 'prod' && github.event.inputs.Deploy == 'true' }}
       run: |
         echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
         commit_hash=`git rev-parse HEAD`
         aws deploy create-deployment --application-name flash-deploy --deployment-group-name flash-deployment-group --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
 
   test:
+    if: ${{ github.event.inputs.Environment == 'prod' && github.event.inputs.Deploy == 'true' }}
     needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Run CI/CD tests
-        if: ${{ github.event.inputs.Environment == 'prod' && github.event.inputs.Deploy == 'true' }}
         uses: akto-api-security/run-scan@v1.0.3
         with:
           AKTO_DASHBOARD_URL: ${{vars.AKTO_DASHBOARD_URL}}
